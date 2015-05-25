@@ -1,0 +1,16 @@
+{
+  "name": "view-controller",
+  "version": "1.0.0",
+  "authors": [
+    "Marc-Antoine Lemieux <marc@marcantoinelemieux.com>"
+  ],
+  "main": "index.js",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
