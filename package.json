@@ -1,0 +1,23 @@
+{
+  "name": "view-controller",
+  "version": "1.0.0",
+  "description": "A type of controller for Marionette to separate business logic from rendering logic.",
+  "main": "index.js",
+  "scripts": {
+    "test": "grunt test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lemieux/view-controller.git"
+  },
+  "keywords": [
+    "marionette",
+    "backbone"
+  ],
+  "author": "Marc-Antoine Lemieux",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lemieux/view-controller/issues"
+  },
+  "homepage": "https://github.com/lemieux/view-controller"
+}
