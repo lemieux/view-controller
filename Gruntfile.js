@@ -103,7 +103,8 @@ module.exports = function(grunt) {
     require('load-grunt-tasks')(grunt, {
         scope: 'devDependencies'
     });
-    grunt.registerTask('test', ['karma']);
+    grunt.registerTask('test:unit', ['karma:unit']);
+    grunt.registerTask('test:ci', ['karma:ci']);
     // Default task.
     grunt.registerTask('default', ['test']);
 
