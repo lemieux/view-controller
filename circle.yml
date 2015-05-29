@@ -1,3 +1,5 @@
 test:
-    override:
-        - karma start
+  pre:
+    - npm install -g karma
+  override:
+    - karma start
