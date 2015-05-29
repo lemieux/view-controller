@@ -1,5 +1,3 @@
 test:
-  pre:
-    - npm install -g karma
   override:
     - grunt test:ci
