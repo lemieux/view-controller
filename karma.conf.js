@@ -2,6 +2,7 @@
 // Generated on Fri Nov 07 2014 08:13:06 GMT-0500 (EST)
 
 module.exports = function(config) {
+    var testReportsPath = process.env['CIRCLE_TEST_REPORTS'] || '.';
     config.set({
 
         // base path that will be used to resolve all patterns (eg. files, exclude)
@@ -32,8 +33,13 @@ module.exports = function(config) {
         // test results reporter to use
         // possible values: 'dots', 'progress'
         // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-        reporters: ['progress'],
+        reporters: ['progress', 'junit'],
 
+        // the default configuration
+        junitReporter: {
+            outputFile: testReportsPath + '/junit/test-results.xml',
+            suite: ''
+        },
 
         // web server port
         port: 9876,

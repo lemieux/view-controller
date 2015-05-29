@@ -74,9 +74,7 @@ module.exports = function(grunt) {
 
         karma: {
             unit: {
-                configFile: 'karma.conf.js',
-                singleRun: false,
-                runnerPort: 9998
+                configFile: 'karma.conf.js'
             }
         },
 
