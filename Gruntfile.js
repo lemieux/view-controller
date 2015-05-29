@@ -77,16 +77,21 @@ module.exports = function(grunt) {
                 configFile: 'karma.conf.js',
                 singleRun: false,
                 browsers: ['Chrome', 'PhantomJS']
+            },
+            ci: {
+                configFile: 'karma.conf.js',
+                singleRun: true,
+                browsers: ['PhantomJS']
             }
         },
 
 
         sed: {
             versionNumber: {
-                pattern: (function() {
+                pattern: ( function() {
                     var old = grunt.option('oldver');
                     return old ? RegExp.quote(old) : old;
-                })(),
+                } )(),
                 replacement: grunt.option('newver'),
                 recursive: true
             }
