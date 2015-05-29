@@ -4,7 +4,7 @@
   "description": "A type of controller for Marionette to separate business logic from rendering logic.",
   "main": "index.js",
   "scripts": {
-    "test": "karma test"
+    "test": "karma start"
   },
   "repository": {
     "type": "git",
