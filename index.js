@@ -93,9 +93,11 @@
         },
 
         _getOption: function (name) {
-            return _.result({
-                options: this.getOption(name)
-            }, 'options', {});
+            var option = this.getOption(name);
+
+            _.isFunction(option) && (option = option.call(this));
+
+            return option;
         },
 
         getViewOptions: function () {
