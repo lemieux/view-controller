@@ -252,4 +252,41 @@
         });
     });
 
+
+    describe('Dynamic view options', function() {
+        var Controller;
+
+
+        beforeEach(function() {
+            Controller = ViewController.extend({
+                _getDummyValue: function(){
+                    return 'dummy';
+                },
+
+                viewOptions: function(){
+                    var dummyOption = this._getDummyValue();
+
+                    return {
+                        dummyOption: dummyOption
+                    };
+                }
+            });
+        });
+
+        it('should return the option', function() {
+            var model = new Backbone.Model(),
+                collection = new Backbone.Collection();
+
+            var controller = new Controller({
+                model: model,
+                collection: collection
+            });
+
+
+            var options = controller.getViewOptions();
+
+            options.dummyOption.should.equal('dummy');
+        });
+    })
+
 });
