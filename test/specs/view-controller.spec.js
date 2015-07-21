@@ -24,12 +24,16 @@
             var onBindEventsSpy;
             var onBindTriggersSpy;
             var viewEventBindingSpy;
+            var modelEventBindingSpy;
+            var collectionEventBindingSpy;
             var Controller;
 
             beforeEach(function() {
                 onBindEventsSpy = sandbox.spy();
                 onBindTriggersSpy = sandbox.spy();
                 viewEventBindingSpy = sandbox.spy();
+                modelEventBindingSpy = sandbox.spy();
+                collectionEventBindingSpy = sandbox.spy();
 
                 Controller = ViewController.extend({
                     viewClass: Marionette.LayoutView,
@@ -45,9 +49,19 @@
                         'view:trigger': 'view:trigger'
                     },
 
+                    modelEvents: {
+                        'change': 'onModelChange'
+                    },
+
+                    collectionEvents: {
+                        'add': 'onCollectionAdd'
+                    },
+
                     onBindEvents: onBindEventsSpy,
                     onBindTriggers: onBindTriggersSpy,
-                    triggerEventBinding: viewEventBindingSpy
+                    triggerEventBinding: viewEventBindingSpy,
+                    onModelChange: modelEventBindingSpy,
+                    onCollectionAdd: collectionEventBindingSpy
                 });
 
             });
@@ -222,6 +236,52 @@
                     view.destroy();
                     viewDestroySpy.should.have.been.calledOnce;
                     destroySpy.should.have.been.calledOnce;
+                });
+            });
+
+            describe('#modelEvents', function() {
+                var controllerInstance,
+                    view,
+                    model;
+
+                beforeEach(function() {
+                    model = new Backbone.Model();
+                    controllerInstance = new Controller({
+                        model: model
+                    });
+                    view = controllerInstance.getView();
+                });
+
+                afterEach(function() {
+                    controllerInstance.destroy();
+                });
+
+                it('should call the function defined in the model events definition', function() {
+                    model.set('prop', true);
+                    modelEventBindingSpy.should.have.been.calledOnce;
+                });
+            });
+
+            describe('#collectionEvents', function() {
+                var controllerInstance,
+                    view,
+                    collection;
+
+                beforeEach(function() {
+                    collection = new Backbone.Collection();
+                    controllerInstance = new Controller({
+                        collection: collection
+                    });
+                    view = controllerInstance.getView();
+                });
+
+                afterEach(function() {
+                    controllerInstance.destroy();
+                });
+
+                it('should call the function defined in the collection events definition', function() {
+                    collection.add({prop: true});
+                    collectionEventBindingSpy.should.have.been.calledOnce;
                 });
             });
         });

@@ -1,14 +1,14 @@
-(function (root, factory) {
+( function(root, factory) {
     if (typeof define === 'function' && define.amd) {
         define(['underscore', 'marionette'], factory);
     } else if (typeof exports === 'object') {
         module.exports = factory(require('underscore'), require('backbone.marionette'));
     }
-})(this, function (_, Marionette) {
+} )(this, function(_, Marionette) {
 
     'use strict';
 
-    return Marionette.Controller.extend({
+    return Marionette.Object.extend({
         /**
          * Constructor to use to instantiate the view
          * Cannot be a function.
@@ -67,6 +67,55 @@
 
         viewTriggers: {},
 
+
+        /**
+         * Events bindings on the model
+         * Can be a function.
+         * Can be overriden by options at instantiation.
+         * @type {Object}
+         *
+         * @example
+         *
+         * modelEvents: {
+         *   'save': 'onModelSave',
+         *   'sync': 'onModelSync'
+         * },
+         *
+         * onModelSave: function(){
+         *   this.view.collapse();
+         * },
+         *
+         * onModelSync: function(){
+         *   this.view.showLoading();
+         * }
+         */
+        modelEvents: {},
+
+        /**
+         * Events bindings on the collection
+         * Can be a function.
+         * Can be overriden by options at instantiation.
+         * @type {Object}
+         *
+         * @example
+         *
+         * collectionEvents: {
+         *   'add': 'onCollectionAdd',
+         *   'remove': 'onCollectionRemove'
+         * },
+         *
+         * onCollectionAdd: function(model) {
+         *   this.view.hideBanner();
+         * },
+         *
+         * onCollectionSync: function(model) {
+         *   if(this.collection.length === 0) {
+         *     this.view.showBanner();
+         *   }
+         * }
+         */
+        collectionEvents: {},
+
         /**
          * Determines if the controller is destroyed when the view is.
          * Cannot be a function.
@@ -75,24 +124,30 @@
          */
         isDestroyedWithView: true,
 
-        constructor: function (options) {
+        constructor: function(options) {
             options || (options = {});
             if (options.model) {
                 this.model = options.model;
+
+                this.modelEvents = this.getModelEvents();
+                Marionette.bindEntityEvents(this, this.model, this.modelEvents);
             }
 
             if (options.collection) {
                 this.collection = options.collection;
+
+                this.collectionEvents = this.getCollectionEvents();
+                Marionette.bindEntityEvents(this, this.collection, this.collectionEvents);
             }
 
-            Marionette.Controller.call(this, options);
+            Marionette.Object.call(this, options);
         },
 
-        getViewClass: function () {
+        getViewClass: function() {
             return this.getOption('viewClass');
         },
 
-        _getOption: function (name) {
+        _getOption: function(name) {
             var option = this.getOption(name);
 
             _.isFunction(option) && (option = option.call(this));
@@ -100,7 +155,7 @@
             return option;
         },
 
-        getViewOptions: function () {
+        getViewOptions: function() {
             var baseOptions = {};
 
             if (this.model) {
@@ -116,15 +171,23 @@
             return _.extend(baseOptions, options);
         },
 
-        getViewEvents: function () {
+        getViewEvents: function() {
             return this._getOption('viewEvents');
         },
 
-        getViewTriggers: function () {
+        getViewTriggers: function() {
             return this._getOption('viewTriggers');
         },
 
-        buildView: function () {
+        getModelEvents: function() {
+            return this._getOption('modelEvents');
+        },
+
+        getCollectionEvents: function() {
+            return this._getOption('collectionEvents');
+        },
+
+        buildView: function() {
             var viewOptions = this.getViewOptions();
             var ViewClass = this.getViewClass();
 
@@ -135,7 +198,7 @@
             return view;
         },
 
-        bindEvents: function (view) {
+        bindEvents: function(view) {
             this.viewEvents = this.getViewEvents();
             Marionette.bindEntityEvents(this, view, this.viewEvents);
 
@@ -143,10 +206,10 @@
             this.triggerMethod('bind:events', view);
         },
 
-        bindTriggers: function (view) {
+        bindTriggers: function(view) {
             this.viewTriggers = this.getViewTriggers();
 
-            _.each(this.viewTriggers, function (value, key) {
+            _.each(this.viewTriggers, function(value, key) {
                 this._buildTrigger(view, key, value);
             }, this);
 
@@ -154,17 +217,17 @@
             this.triggerMethod('bind:triggers', view);
         },
 
-        _buildTrigger: function (view, eventName, triggerName) {
-            this.listenTo(view, eventName, _.bind(function () {
+        _buildTrigger: function(view, eventName, triggerName) {
+            this.listenTo(view, eventName, _.bind(function() {
                 this.trigger.apply(this, _.union([triggerName], _.toArray(arguments)));
             }, this));
         },
 
-        hasView: function () {
+        hasView: function() {
             return this.view && !this.view.isDestroyed;
         },
 
-        getView: function () {
+        getView: function() {
             if (!this.view || this.view.isDestroyed) {
                 this.view = this.buildView();
 
@@ -176,7 +239,7 @@
             return this.view;
         },
 
-        onDestroy: function () {
+        onDestroy: function() {
             if (this.view && !this.view.isDestroyed) {
                 this.view.destroy();
             }
