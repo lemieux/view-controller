@@ -1,6 +1,6 @@
 {
   "name": "view-controller",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A type of controller for Marionette to separate business logic from rendering logic.",
   "main": "index.js",
   "scripts": {
