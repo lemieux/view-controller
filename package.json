@@ -21,10 +21,10 @@
   },
   "homepage": "https://github.com/lemieux/view-controller",
   "dependencies": {
-    "backbone": "1.1.2",
-    "backbone.marionette": "^2.4.1",
-    "jquery": "^1.10.0",
-    "underscore": "^1.6.0"
+    "backbone": ">=1.1.2",
+    "backbone.marionette": ">=2.4.1",
+    "jquery": ">=1.10.0",
+    "underscore": ">=1.6.0"
   },
   "devDependencies": {
     "chai": "^1.9.2",
