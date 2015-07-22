@@ -4,7 +4,7 @@
   "description": "A type of controller for Marionette to separate business logic from rendering logic.",
   "main": "index.js",
   "scripts": {
-    "test": "grunt test:unit"
+    "test": "grunt test"
   },
   "repository": {
     "type": "git",
